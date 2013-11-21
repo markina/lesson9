@@ -51,6 +51,7 @@ public class MyIntentService extends IntentService {
                 DefaultHttpClient httpClient = new DefaultHttpClient();
                 String w = "http://api.worldweatheronline.com/free/v1/tz.ashx?q=" + town
                         + "&format=xml&key=9379gushvyewdcqy66ya3ppm";
+
                 HttpGet httpGet = new HttpGet(w);
                 HttpResponse httpResponse = httpClient.execute(httpGet);
                 HttpEntity httpEntity = httpResponse.getEntity();
