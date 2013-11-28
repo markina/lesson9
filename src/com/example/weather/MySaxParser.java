@@ -10,6 +10,7 @@ import java.util.Vector;
 
 public class MySaxParser extends DefaultHandler {
     Info info = new Info();
+    int d = 0;
 
 
     static String TEMP_C = "temp_C#";
@@ -18,7 +19,10 @@ public class MySaxParser extends DefaultHandler {
     static String PRESSURE = "pressure#";
     static String HUMIDITY = "humidity#";
     static String WIND_DIR_16_POINT = "winddir16Point#";
-    static String LOCAL_TIME = "localtime#";
+    static String LOCAL_TIME = "localObsDateTime#";
+    static String TEMP_MIN_C = "tempMinC#";
+    static String TEMP_MAX_C = "tempMaxC#";
+    static String WEATHER = "date#";
 
     String lastTag = "";
     String st = "";
@@ -28,7 +32,11 @@ public class MySaxParser extends DefaultHandler {
     }
 
     public void startElement(String uri, String localName, String qName, Attributes attributes) {
-        lastTag = qName + "#";
+        if(d <= 3){
+            lastTag = qName + "#";
+        } else {
+            lastTag = "y";
+        }
     }
 
     public void endElement(String uri, String localName, String qName) {
@@ -36,21 +44,88 @@ public class MySaxParser extends DefaultHandler {
         if (lastTag.equals(TEMP_C)) {
             info.temp = Integer.parseInt(st);
         }
+        if (lastTag.equals(TEMP_MAX_C)) {
+            switch (d) {
+                case 1 :
+                    info.maxTemp1 = Integer.parseInt(st);
+                    break;
+                case 2:
+                    info.maxTemp2 = Integer.parseInt(st);
+                    break;
+                case 3:
+                    info.maxTemp3 = Integer.parseInt(st);
+                    break;
+            }
+        }
+        if (lastTag.equals(TEMP_MIN_C)) {
+            switch (d) {
+                case 1 :
+                    info.minTemp1 = Integer.parseInt(st);
+                    break;
+                case 2:
+                    info.minTemp2 = Integer.parseInt(st);
+                    break;
+                case 3:
+                    info.minTemp3 = Integer.parseInt(st);
+                    break;
+            }
+        }
         if (lastTag.equals(WEATHER_DESC)) {
-            info.mess = st;
+            switch (d) {
+                case 0 :
+                    info.mess = st;
+                    break;
+                case 1 :
+                    info.mess1 = st;
+                    break;
+                case 2 :
+                    info.mess2 = st;
+                    break;
+                case 3 :
+                    info.mess3 = st;
+                    break;
+
+            }
         }
         if (lastTag.equals(WIND_DIR_16_POINT)) {
-            info.vecL = st;
+            switch (d) {
+                case 0 :
+                    info.vecL = st;
+                    break;
+                case 1 :
+                    info.vecL1 = st;
+                    break;
+                case 2 :
+                    info.vecL2 = st;
+                    break;
+                case 3 :
+                    info.vecL3 = st;
+                    break;
+            }
         }
         if (lastTag.equals(WIND_SPEED_KMPH)) {
             double sp = Integer.parseInt(st);
             sp = sp * 1000 / 3600;
-            info.sp = (int)sp;
+            switch (d) {
+                case 0 :
+                    info.sp = (int)sp;
+                    break;
+                case 1 :
+                    info.sp1 = (int)sp;
+                    break;
+                case 2 :
+                    info.sp2 = (int)sp;
+                    break;
+                case 3 :
+                    info.sp3 = (int)sp;
+                    break;
+            }
         }
         if (lastTag.equals(PRESSURE)) {
             double mm = Double.parseDouble(st);
             mm *= 0.75;
             info.mm = (int)mm;
+
         }
         if (lastTag.equals(HUMIDITY)) {
             info.hum = Integer.parseInt(st);
@@ -67,8 +142,9 @@ public class MySaxParser extends DefaultHandler {
             info.hours = Integer.parseInt(y);
             y = "" + st.charAt(14) + st.charAt(15);
             info.minutes = Integer.parseInt(y);
-            if(info.hours >= 0 && info.hours < 7
-                    || info.hours >= 22)
+            y = "" + st.charAt(17) + st.charAt(18);
+            info.timeL = " " + y;
+            if((y.equals(" AM") && info.hours < 7) || (y.equals(" PM") && info.hours >= 10))
                 info.isNight = true;
             else
                 info.isNight = false;
@@ -89,9 +165,14 @@ public class MySaxParser extends DefaultHandler {
                 ||lastTag.equals(HUMIDITY)
                 ||lastTag.equals(PRESSURE)
                 ||lastTag.equals(WIND_DIR_16_POINT)
-                ||lastTag.equals(LOCAL_TIME))
+                ||lastTag.equals(LOCAL_TIME)
+                ||lastTag.equals(TEMP_MIN_C)
+                ||lastTag.equals(TEMP_MAX_C))
         {
             st += e;
+        }
+        if(lastTag.equals(WEATHER)) {
+            d++;
         }
     }
 

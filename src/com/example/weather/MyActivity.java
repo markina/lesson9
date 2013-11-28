@@ -20,6 +20,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -31,7 +32,11 @@ public class MyActivity extends Activity {
         @Override
         public void onReceive(Context context, Intent intent) {
             Info info = (Info)intent.getSerializableExtra("message");
-            writeActivityInfo(info);
+            if(info.vecL == null) {
+                Toast.makeText(MyActivity.this, "Problem with internet", Toast.LENGTH_LONG).show();
+            } else {
+                writeActivityInfo(info);
+            }
         }
     };
 
@@ -39,12 +44,12 @@ public class MyActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+//        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
 
         Spinner spinnerTown = (Spinner) findViewById(R.id.spTown);
         final String[] townesRu = {"Москва", "Санкт-Петербург", "Омск", "Казань", "Владивосток"};
-        final String[] townesEn = {"Moscow", "Saint-Petersburg", "Omsk", "Kazan", "Vladivostok"};
+        final String[] townesEn = {"Moscow", "59.921621,30.467361", "Omsk", "Kazan", "Vladivostok"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>
                 (this, android.R.layout.simple_spinner_item, townesRu);
         spinnerTown.setAdapter(adapter);
@@ -91,17 +96,22 @@ public class MyActivity extends Activity {
         TextView tvConstHum = (TextView) findViewById(R.id.tvConstHumidity);
         TextView tvConstToday = (TextView) findViewById(R.id.tvConstToday);
 
+        TextView tvConstFor = (TextView) findViewById(R.id.tvConstForPeople);
+        tvConstFor.setText("Прогноз на следующие 3 дня:");
+        TextView tvConstTimeL = (TextView) findViewById(R.id.tvConstTimeL);
+        tvConstTimeL.setText(info.timeL);
+
         tvConstToday.setText("Сегодня");
         tvConstHum.setText("Влажность");
         tvConstMmH.setText("мм рт. ст.");
         tvConstWindVector.setText("м/с");
 
 
-        String degree = "" + (char)186;
+        String degree = "" + (char)186 + " C";
         if(info.temp > 0) {
-            myTemp.setText("+" + info.temp + degree + "C");
+            myTemp.setText("+" + info.temp + degree);
         } else {
-            myTemp.setText(info.temp + degree + "C");
+            myTemp.setText(info.temp + degree);
         }
 
 
@@ -179,20 +189,43 @@ public class MyActivity extends Activity {
         map.put("Overcast", new ForMap("Облачно", new Pair<Integer, Integer>(R.raw.cloudy, R.raw.night_cloudy)));
         map.put("Cloudy", new ForMap("Облачно", new Pair<Integer, Integer>(R.raw.cloudy, R.raw.night_cloudy)));
         map.put("Partly Cloudy", new ForMap("Облачно с проснениями", new Pair<Integer, Integer>(R.raw.fair, R.raw.night_cloudy)));
-        map.put("Clear/Sunny", new ForMap("Ясно", new Pair<Integer, Integer>(R.raw.clear, R.raw.night_clear)));
+        map.put("Clear", new ForMap("Ясно", new Pair<Integer, Integer>(R.raw.clear, R.raw.night_clear)));
+        map.put("Sunny", new ForMap("Ясно", new Pair<Integer, Integer>(R.raw.clear, R.raw.night_clear)));
 
         ImageView imageView = (ImageView) findViewById(R.id.imvMain);
 
         ForMap t = map.get(info.mess.trim());
-
-        Bitmap bitmapNat;
-
 
         if(info.isNight) {
             imageView.setImageResource(t.pair.second);
         } else {
             imageView.setImageResource(t.pair.first);
         }
+
+
+        ImageView imageView1 = (ImageView) findViewById(R.id.iv1Main1);
+        t = map.get(info.mess1.trim());
+        imageView1.setImageResource(t.pair.first);
+        TextView temp1 = (TextView) findViewById(R.id.temp1);
+        temp1.setText(((Integer)info.minTemp1).toString() + degree + "..." +((Integer)info.maxTemp1).toString() + degree);
+        TextView mess1 = (TextView) findViewById(R.id.tvMsg1);
+        mess1.setText(t.mess);
+
+        ImageView imageView2 = (ImageView) findViewById(R.id.iv1Main2);
+        t = map.get(info.mess2.trim());
+        imageView2.setImageResource(t.pair.first);
+        TextView temp2 = (TextView) findViewById(R.id.temp2);
+        temp2.setText(((Integer)info.minTemp2).toString() + degree + "..." +((Integer)info.maxTemp2).toString() + degree);
+        TextView mess2 = (TextView) findViewById(R.id.tvMsg2);
+        mess2.setText(t.mess);
+
+        ImageView imageView3 = (ImageView) findViewById(R.id.iv1Main3);
+        t = map.get(info.mess3.trim());
+        imageView3.setImageResource(t.pair.first);
+        TextView temp3 = (TextView) findViewById(R.id.temp3);
+        temp3.setText(((Integer)info.minTemp3).toString() + degree + "..." +((Integer)info.maxTemp3).toString() + degree);
+        TextView mess3 = (TextView) findViewById(R.id.tvMsg3);
+        mess3.setText(t.mess);
 
         myMessage.setText(t.mess);
 
@@ -238,12 +271,14 @@ public class MyActivity extends Activity {
                 myViewVec.setText("↖");
                 break;
         }
-        String q = info.day + "." +
+
+        String q = (info.day < 10 ? "0" : "") + info.day + "."
+                + (info.month < 10 ? "0" : "") +
                 info.month + "." +
                 info.year;
         mydate.setText(q);
 
-        String e = info.hours + ":" + info.minutes;
+        String e = (info.hours < 10 ? "0" : "") + info.hours + ":" + (info.minutes < 10 ? "0" : "") + info.minutes;
         myTime.setText(e);
     }
 

@@ -3,11 +3,14 @@
               android:orientation="vertical"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
+              android:scrollbars="vertical"
         >
+
     <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" android:layout_margin="10dp">
+            android:layout_height="wrap_content" android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp" android:layout_marginRight="10dp">
         <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
@@ -23,11 +26,21 @@
                     android:layout_height="wrap_content"
                     android:textSize="15dp"
                     android:id="@+id/tvConstDate" android:textIsSelectable="true"/>
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="15dp"
-                    android:id="@+id/tvConstTime"/>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="15dp"
+                        android:id="@+id/tvConstTime"/>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" "
+                        android:id="@+id/tvConstTimeL"/>
+            </LinearLayout>
         </LinearLayout>
         <LinearLayout
                 android:orientation="vertical"
@@ -54,24 +67,20 @@
                             android:layout_height="wrap_content"
                             android:text=""
                             android:id="@+id/tvTemperature" android:textSize="30dp"/>
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/tvMessage"
+                            android:textSize="17dp" android:textIsSelectable="false" android:layout_gravity="center_horizontal"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/tvMessage"
-                android:textSize="20dp" android:textIsSelectable="false" android:layout_gravity="center_horizontal"/>
-    </LinearLayout>
-    <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" android:layout_margin="10dp">
+            android:layout_height="wrap_content" android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp" android:layout_marginBottom="5dp">
         <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
@@ -86,7 +95,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=""
-                    android:textSize="20dp"
+                    android:textSize="15dp"
                     android:id="@+id/tvConstHumidity"/>
         </LinearLayout>
         <LinearLayout
@@ -104,7 +113,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=""
-                    android:textSize="20dp"
+                    android:textSize="15dp"
                     android:id="@+id/tvConstMmHg"/>
         </LinearLayout>
         <LinearLayout
@@ -122,7 +131,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=""
-                    android:textSize="20dp"
+                    android:textSize="15dp"
                     android:id="@+id/tvConstWindVelocity"/>
         </LinearLayout>
         <LinearLayout
@@ -140,6 +149,103 @@
                     android:layout_height="wrap_content"
                     android:textSize="20dp"
                     android:id="@+id/tvViewWindVector"/>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" "
+                android:id="@+id/tvConstForPeople"/>
+    </LinearLayout>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:scaleType="centerInside"
+                android:id="@+id/iv1Main1"
+                android:longClickable="false"
+                android:adjustViewBounds="false"/>
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" "
+                    android:textSize="15dp"
+                    android:id="@+id/temp1"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" "
+                    android:textSize="15dp"
+                    android:id="@+id/tvMsg1"/>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:scaleType="centerInside"
+                android:id="@+id/iv1Main2"
+                android:longClickable="false"
+                android:adjustViewBounds="false"/>
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" "
+                    android:textSize="15dp"
+                    android:id="@+id/temp2"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" "
+                    android:textSize="15dp"
+                    android:id="@+id/tvMsg2"/>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:scaleType="centerInside"
+                android:id="@+id/iv1Main3"
+                android:longClickable="false"
+                android:adjustViewBounds="false"/>
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" "
+                    android:textSize="15dp"
+                    android:id="@+id/temp3"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" "
+                    android:textSize="15dp"
+                    android:id="@+id/tvMsg3"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

@@ -23,64 +23,30 @@ public class MyIntentService extends IntentService {
     protected void onHandleIntent(Intent intent) {
 
         town = intent.getStringExtra("exTown");
-        while (true) {
-            String answer = "";
-            try {
-                DefaultHttpClient httpClient = new DefaultHttpClient();
-                String v = "http://api.worldweatheronline.com/free/v1/weather.ashx?q=" + town
-                        + "&format=xml&num_of_days=5&fx=no&includelocation=yes&key=9379gushvyewdcqy66ya3ppm";
-                HttpGet httpGet = new HttpGet(v);
-                HttpResponse httpResponse = httpClient.execute(httpGet);
-                HttpEntity httpEntity = httpResponse.getEntity();
-                answer = EntityUtils.toString(httpEntity);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            XMLParser parser = new XMLParser();
-            try {
-                parser.putAnswer(answer);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            info = parser.getInfo();
-
-
-            try {
-                DefaultHttpClient httpClient = new DefaultHttpClient();
-                String w = "http://api.worldweatheronline.com/free/v1/tz.ashx?q=" + town
-                        + "&format=xml&key=9379gushvyewdcqy66ya3ppm";
-
-                HttpGet httpGet = new HttpGet(w);
-                HttpResponse httpResponse = httpClient.execute(httpGet);
-                HttpEntity httpEntity = httpResponse.getEntity();
-                answer = EntityUtils.toString(httpEntity);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            XMLParser parser2 = new XMLParser();
-            try {
-                parser2.putAnswer(answer);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            Info info2 = parser2.getInfo();
-
-            info.hours = info2.hours;
-            info.minutes = info2.minutes;
-            info.year = info2.year;
-            info.month = info2.month;
-            info.day = info2.day;
-            info.isNight = info2.isNight;
-
-            if (info.isNight != null) {
-                sendMessage();
-                return;
-            }
+        String answer = "";
+        try {
+            DefaultHttpClient httpClient = new DefaultHttpClient();
+            String v = "http://api.worldweatheronline.com/free/v1/weather.ashx?q=" + town +
+                    "&format=xml&num_of_days=5&key=9379gushvyewdcqy66ya3ppm&extra=localObsTime";
+            HttpGet httpGet = new HttpGet(v);
+            HttpResponse httpResponse = httpClient.execute(httpGet);
+            HttpEntity httpEntity = httpResponse.getEntity();
+            answer = EntityUtils.toString(httpEntity);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        XMLParser parser = new XMLParser();
+        try {
+            parser.putAnswer(answer);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        info = parser.getInfo();
+
+
+        sendMessage();
     }
 
     private void sendMessage() {
