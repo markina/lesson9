@@ -11,6 +11,8 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Pair;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
 import org.apache.http.HttpEntity;
@@ -41,11 +43,23 @@ public class MyActivity extends Activity {
     };
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.refresh) {
+            //  refresh
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-//        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
 
         Spinner spinnerTown = (Spinner) findViewById(R.id.spTown);
         final String[] townesRu = {"Москва", "Санкт-Петербург", "Омск", "Казань", "Владивосток"};
