@@ -170,7 +170,7 @@ public class MyActivity extends Activity {
         map.put("Moderate or heavy rain shower", new ForMap("Дождь", new Pair<Integer, Integer>(R.raw.rain, R.raw.night_fair_and_rain)));
         map.put("Light rain shower", new ForMap("Дождь", new Pair<Integer, Integer>(R.raw.rain, R.raw.night_fair_and_rain)));
         map.put("Ice pellets", new ForMap("Град", new Pair<Integer, Integer>(R.raw.rain_hail, R.raw.rain_hail)));
-        map.put("Heavy snow", new ForMap("Снег", new Pair<Integer, Integer>(R.raw.snow, R.raw.night_snow)));
+        map.put("Heavy snow", new ForMap("Сильный снег", new Pair<Integer, Integer>(R.raw.snow, R.raw.night_snow)));
         map.put("Patchy heavy snow", new ForMap("Снег", new Pair<Integer, Integer>(R.raw.snow, R.raw.night_snow)));
         map.put("Moderate snow", new ForMap("Снег", new Pair<Integer, Integer>(R.raw.snow, R.raw.night_snow)));
         map.put("Patchy moderate snow", new ForMap("Снег", new Pair<Integer, Integer>(R.raw.snow, R.raw.night_snow)));
@@ -184,7 +184,7 @@ public class MyActivity extends Activity {
         map.put("Heavy rain at times", new ForMap("Сильный дождь", new Pair<Integer, Integer>(R.raw.rain_heavy, R.raw.night_fair_and_rain)));
         map.put("Moderate rain", new ForMap("Дождь", new Pair<Integer, Integer>(R.raw.rain, R.raw.night_fair_and_rain)));
         map.put("Moderate rain at times", new ForMap("Дождь", new Pair<Integer, Integer>(R.raw.rain, R.raw.night_fair_and_rain)));
-        map.put("Light rain", new ForMap("Дождь", new Pair<Integer, Integer>(R.raw.rain, R.raw.night_fair_and_rain)));
+        map.put("Light rain", new ForMap("Небольшой дождь", new Pair<Integer, Integer>(R.raw.rain, R.raw.night_fair_and_rain)));
         map.put("Patchy light rain", new ForMap("Дождь", new Pair<Integer, Integer>(R.raw.rain, R.raw.night_fair_and_rain)));
         map.put("Heavy freezing drizzle", new ForMap("Дождь", new Pair<Integer, Integer>(R.raw.rain, R.raw.night_fair_and_rain)));
         map.put("Freezing drizzle", new ForMap("Дождь", new Pair<Integer, Integer>(R.raw.rain, R.raw.night_fair_and_rain)));
@@ -206,14 +206,15 @@ public class MyActivity extends Activity {
         map.put("Clear", new ForMap("Ясно", new Pair<Integer, Integer>(R.raw.clear, R.raw.night_clear)));
         map.put("Sunny", new ForMap("Ясно", new Pair<Integer, Integer>(R.raw.clear, R.raw.night_clear)));
 
-        ImageView imageView = (ImageView) findViewById(R.id.imvMain);
-
+        ImageView imvMain = (ImageView) findViewById(R.id.imvMain);
         ForMap t = map.get(info.mess.trim());
 
+        myMessage.setText(t.mess);
+
         if(info.isNight) {
-            imageView.setImageResource(t.pair.second);
+            imvMain.setImageResource(t.pair.second);
         } else {
-            imageView.setImageResource(t.pair.first);
+            imvMain.setImageResource(t.pair.first);
         }
 
 
@@ -241,7 +242,6 @@ public class MyActivity extends Activity {
         TextView mess3 = (TextView) findViewById(R.id.tvMsg3);
         mess3.setText(t.mess);
 
-        myMessage.setText(t.mess);
 
         myHum.setText(info.hum + "%");
         myMm.setText(info.mm + "");
