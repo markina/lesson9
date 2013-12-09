@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -29,13 +30,17 @@ import java.util.HashMap;
 
 public class MyActivity extends Activity {
     final String town = "";
+    int lastPosition = 0;
+    Spinner spinnerTown;
+    final String[] townesRu = {"Москва", "Якутск", "Санкт-Петербург", "Омск", "Казань", "Владивосток"};
+    final String[] townesEn = {"Moscow", "62.0333333,129.7333333", "59.921621,30.467361", "Omsk", "Kazan", "Vladivostok"};
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             Info info = (Info)intent.getSerializableExtra("message");
             if(info.vecL == null) {
-                Toast.makeText(MyActivity.this, "Problem with internet", Toast.LENGTH_LONG).show();
+                Toast.makeText(MyActivity.this, "Отсутствует доступ к интернету", Toast.LENGTH_LONG).show();
             } else {
                 writeActivityInfo(info);
             }
@@ -51,7 +56,9 @@ public class MyActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.refresh) {
-            //  refresh
+            Intent intent = new Intent(MyActivity.this, MyIntentService.class);
+            intent.putExtra("exTown", townesEn[lastPosition]);
+            startService(intent);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -61,19 +68,18 @@ public class MyActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        Spinner spinnerTown = (Spinner) findViewById(R.id.spTown);
-        final String[] townesRu = {"Москва", "Санкт-Петербург", "Омск", "Казань", "Владивосток"};
-        final String[] townesEn = {"Moscow", "59.921621,30.467361", "Omsk", "Kazan", "Vladivostok"};
+        spinnerTown = (Spinner) findViewById(R.id.spTown);
+
         ArrayAdapter<String> adapter = new ArrayAdapter<String>
                 (this, android.R.layout.simple_spinner_item, townesRu);
         spinnerTown.setAdapter(adapter);
         spinnerTown.setPrompt("Город");
-        spinnerTown.setSelection(0);
+        spinnerTown.setSelection(2);
         spinnerTown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id) {
-
+                lastPosition = position;
                 Intent intent = new Intent(MyActivity.this, MyIntentService.class);
                 intent.putExtra("exTown", townesEn[position]);
                 startService(intent);
@@ -83,15 +89,37 @@ public class MyActivity extends Activity {
             public void onNothingSelected(AdapterView<?> parent) {
                 //To change body of implemented methods use File | Settings | File Templates.
             }
-
-
-
         });
+
+        ImageButton btnEdit = (ImageButton) findViewById(R.id.btnEditMain);
+        View.OnClickListener oclBtnEdit = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MyActivity.this, ActivityEdit.class);
+                startActivityForResult(intent, 0);
+            }
+        };
+        btnEdit.setOnClickListener(oclBtnEdit);
+
 
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
                 new IntentFilter("my-event"));
 
 
+
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //todo updated spinner
+        /*
+        Cursor c = db.getFeeds();
+        startManagingCursor(c);
+        SimpleCursorAdapter s = new SimpleCursorAdapter(
+                this, R.layout.simplerow, c, new String[]{"name"}, new int[]{R.id.textView}, 0);
+
+        final Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        spinner.setAdapter(s);
+        */
     }
 
     private void writeActivityInfo(Info info) {
@@ -202,7 +230,7 @@ public class MyActivity extends Activity {
         map.put("Mist", new ForMap("Пасмурно", new Pair<Integer, Integer>(R.raw.foggy, R.raw.foggy)));
         map.put("Overcast", new ForMap("Облачно", new Pair<Integer, Integer>(R.raw.cloudy, R.raw.night_cloudy)));
         map.put("Cloudy", new ForMap("Облачно", new Pair<Integer, Integer>(R.raw.cloudy, R.raw.night_cloudy)));
-        map.put("Partly Cloudy", new ForMap("Облачно с проснениями", new Pair<Integer, Integer>(R.raw.fair, R.raw.night_cloudy)));
+        map.put("Partly Cloudy", new ForMap("Облачно с прояснениями", new Pair<Integer, Integer>(R.raw.fair, R.raw.night_cloudy)));
         map.put("Clear", new ForMap("Ясно", new Pair<Integer, Integer>(R.raw.clear, R.raw.night_clear)));
         map.put("Sunny", new ForMap("Ясно", new Pair<Integer, Integer>(R.raw.clear, R.raw.night_clear)));
 

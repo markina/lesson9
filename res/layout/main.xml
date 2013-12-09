@@ -54,10 +54,22 @@
                         android:orientation="vertical"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent">
-                    <Spinner
+                    <LinearLayout
+                            android:orientation="horizontal"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/spTown"/>
+                            android:layout_height="wrap_content">
+                        <Spinner
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:id="@+id/spTown"/>
+                        <ImageButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:src="@android:drawable/ic_menu_add"
+                                android:text="Edit"
+                                android:id="@+id/btnEditMain"/>
+                    </LinearLayout>
                     <LinearLayout
                             android:orientation="horizontal"
                             android:layout_width="fill_parent"
