@@ -17,8 +17,8 @@
             <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content" android:layout_marginLeft="10dp"
-                    android:layout_marginTop="5dp" android:layout_marginRight="10dp">
+                    android:layout_height="wrap_content" android:layout_marginLeft="3dp"
+                    android:layout_marginTop="3dp" android:layout_marginRight="3dp" android:layout_marginBottom="3dp">
                 <LinearLayout
                         android:orientation="vertical"
                         android:layout_width="wrap_content"
@@ -43,11 +43,6 @@
                                 android:layout_height="wrap_content"
                                 android:textSize="15dp"
                                 android:id="@+id/tvConstTime"/>
-                        <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text=" "
-                                android:id="@+id/tvConstTimeL"/>
                     </LinearLayout>
                 </LinearLayout>
                 <LinearLayout
@@ -63,12 +58,22 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:id="@+id/spTown"/>
-                        <ImageButton
+                        <LinearLayout
+                                android:orientation="horizontal"
                                 android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:src="@android:drawable/ic_menu_add"
-                                android:text="Edit"
-                                android:id="@+id/btnEditMain"/>
+                                android:layout_height="fill_parent" android:focusable="false">
+                            <ImageButton
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:src="@android:drawable/ic_menu_add"
+                                    android:text="Edit"
+                                    android:id="@+id/btnEditMain"/>
+                            <ImageButton
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:id="@+id/ibDeleteMain" android:src="@android:drawable/ic_menu_delete"
+                                    android:cropToPadding="false" android:adjustViewBounds="false"/>
+                        </LinearLayout>
                     </LinearLayout>
                     <LinearLayout
                             android:orientation="horizontal"
@@ -99,8 +104,8 @@
             <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content" android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp" android:layout_marginBottom="5dp">
+                    android:layout_height="wrap_content" android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp" android:layout_marginBottom="5dp">
                 <LinearLayout
                         android:orientation="vertical"
                         android:layout_width="wrap_content"
@@ -174,7 +179,7 @@
             <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content" android:layout_marginLeft="5dp">
                 <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
